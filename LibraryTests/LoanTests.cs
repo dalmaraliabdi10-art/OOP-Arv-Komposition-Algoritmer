@@ -14,7 +14,7 @@ namespace LibraryTests
             var member = new Member("M1", "N", "E");
             // Skulle lämnats tillbaka om 14 dagar
             var loan = new Loan(book, member, DateTime.Now, DateTime.Now.AddDays(14));
-            // Act & Assert
+            // Act & Assert (kolla att det inte är försenat)
             Assert.False(loan.IsOverdue);
         }
 
