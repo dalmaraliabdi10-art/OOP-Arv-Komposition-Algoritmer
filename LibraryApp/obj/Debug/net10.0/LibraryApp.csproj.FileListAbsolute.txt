@@ -12,3 +12,4 @@ C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibraryApp\obj\Debug\
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibraryApp\obj\Debug\net10.0\LibraryApp.pdb
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibraryApp\obj\Debug\net10.0\LibraryApp.genruntimeconfig.cache
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibraryApp\obj\Debug\net10.0\ref\LibraryApp.dll
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibraryApp\obj\Debug\net10.0\LibraryApp.sourcelink.json

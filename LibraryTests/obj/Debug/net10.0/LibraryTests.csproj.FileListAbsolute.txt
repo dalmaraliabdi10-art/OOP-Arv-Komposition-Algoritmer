@@ -101,3 +101,4 @@ C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibraryTests\obj\Debu
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibraryTests\obj\Debug\net10.0\LibraryTests.pdb
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibraryTests\obj\Debug\net10.0\LibraryTests.genruntimeconfig.cache
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibraryTests\obj\Debug\net10.0\ref\LibraryTests.dll
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibraryTests\obj\Debug\net10.0\LibraryTests.sourcelink.json
