@@ -15,11 +15,14 @@ namespace LibraryApp
         public void AddBook(Book book) => _books.Add(book);
         public void AddMember(Member member) => _members.Add(member);
 
+        public List<Member> GetMembers() => _members; // Metod för att hämta alla medlemmar (för att visa i programmet)
+
         // Metod för att söka efter böcker baserat på en sökterm (titel, författare eller ISBN)
         public List<Book> SearchBooks(string searchTerm)
         {
-            // Använder LINQ för att filtrera böcker som matchar söktermen
-            return _books.Where(b => b.Matches(searchTerm)).ToList();
+            // Om searchTerm är null, använd en tom sträng för att undvika null-referensfel
+            string term = searchTerm ?? string.Empty;
+            return _books.Where(b => b.Matches(term)).ToList();
         }
 
         // Metod för att sortera böcker efter publiceringsår
@@ -35,10 +38,10 @@ namespace LibraryApp
         public int GetBorrowedBooksCount() => _books.Count(b => !b.IsAvailable);
 
         // Metod för att hitta den mest aktiva medlemmen (den som har lånat flest böcker)
-        public Member GetMostActiveMember()
+        public Member? GetMostActiveMember()
         {
+            // Om det inte finns några lån, returnera null
             if (!_loans.Any()) return null;
-            // Den grupperar lånen efter medlem, sorterar grupperna i fallande ordning baserat på antal lån, och tar den medlem som har flest lån
             return _loans
                 .GroupBy(l => l.Member)
                 .OrderByDescending(g => g.Count())
@@ -49,20 +52,16 @@ namespace LibraryApp
         // Metod för att låna ut en bok till en medlem
         public void LoanBook(string isbn, string memberId)
         {
+            if (string.IsNullOrEmpty(isbn)) throw new ArgumentException("ISBN kan inte vara tomt.");
+            if (string.IsNullOrEmpty(memberId)) throw new ArgumentException("Medlems-ID kan inte vara tomt.");
+
             var book = _books.FirstOrDefault(b => b.ISBN == isbn);
             var member = _members.FirstOrDefault(m => m.MemberId == memberId);
-
-            if (book == null || member == null) 
-            { // Om antingen boken eller medlemmen inte hittas, skriv ut ett meddelande och avsluta metoden
-                Console.WriteLine("Kunde inte hitta bok eller medlem.");
-                return;
-            }
             
-            if (!book.IsAvailable)
-            { // Om boken inte är tillgänglig, skriv ut ett meddelande och avsluta metoden
-                Console.WriteLine("Boken är tyvärr redan utlånad.");
-                return;
-            }
+            // Kolla att både boken och medlemmen finns, och att boken är tillgänglig
+            if (book == null) throw new ArgumentException($"Boken med ISBN {isbn} hittades inte.");
+            if (member == null) throw new ArgumentException($"Medlem med ID {memberId} hittades inte.");
+            if (!book.IsAvailable) throw new InvalidOperationException("Boken är redan utlånad.");
 
          
             book.IsAvailable = false;
@@ -70,8 +69,7 @@ namespace LibraryApp
             
             _loans.Add(loan);
             member.BorrowedBooks.Add(book);
-            
-            Console.WriteLine($"Boken '{book.Title}' lånades ut till {member.Name}.");
+
         }
 
         // Metod för att återlämna en bok

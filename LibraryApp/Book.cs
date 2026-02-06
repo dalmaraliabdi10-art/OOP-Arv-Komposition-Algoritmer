@@ -12,6 +12,13 @@ namespace LibraryApp
         // Konstruktor
         public Book(string isbn, string title, string author, int year)
         {
+            // Enkel validering av ISBN
+            if (string.IsNullOrWhiteSpace(title)) 
+            throw new ArgumentException("Titel får inte vara tom.");
+            // Enkel validering av årtal
+            if (year < 1000 || year > DateTime.Now.Year + 1)
+            throw new ArgumentException($"Ogiltigt årtal: {year}");
+
             ISBN = isbn;
             Title = title;
             Author = author;

@@ -30,6 +30,17 @@ namespace LibraryApp
                 return DateTime.Now > DueDate; 
             }
         }
+
+        public decimal CalculateLateFee()
+        {
+            if (!IsOverdue) return 0;
+
+            // Räkna ut antal dagar försenad
+            var referenceDate = ReturnDate ?? DateTime.Now; // Använd ReturnDate om den finns, annars använd dagens datum
+            int daysOverdue = (referenceDate - DueDate).Days;
+
+            return daysOverdue * 10; // 10 kr per dag i avgift
+        }
         
         // Kollar om ReturnDate har ett värde
         public bool IsReturned => ReturnDate.HasValue; 

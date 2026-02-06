@@ -58,5 +58,12 @@ namespace LibraryTests
             // Sista boken ska vara den nyaste (2024)
             Assert.Equal(2024, sorted[2].PublishedYear);
         }
+
+        [Fact]
+        public void LoanBook_ShouldThrowException_WhenBookNotAvailable()
+        {
+            var lib = new Library();
+            Assert.Throws<ArgumentException>(() => lib.LoanBook("999", "M1"));
+        }
     }
 }
