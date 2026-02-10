@@ -39,6 +39,7 @@ namespace LibraryTests
             lib.LoanBook("2", "M1");
 
             var winner = lib.GetMostActiveMember();
+            Assert.NotNull(winner);
             Assert.Equal("Anna", winner.Name);
         }
 

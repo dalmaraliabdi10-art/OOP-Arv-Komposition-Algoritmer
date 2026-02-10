@@ -20,9 +20,12 @@ namespace LibraryApp
         // Metod för att söka efter böcker baserat på en sökterm (titel, författare eller ISBN)
         public List<Book> SearchBooks(string searchTerm)
         {
-            // Om searchTerm är null, använd en tom sträng för att undvika null-referensfel
-            string term = searchTerm ?? string.Empty;
-            return _books.Where(b => b.Matches(term)).ToList();
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                // Om söktermen är tom, returnera alla böcker
+                return _books.ToList();
+            }
+            return _books.Where(b => b.Matches(searchTerm)).ToList();
         }
 
         // Metod för att sortera böcker efter publiceringsår
@@ -50,25 +53,27 @@ namespace LibraryApp
         }
 
         // Metod för att låna ut en bok till en medlem
-        public void LoanBook(string isbn, string memberId)
+        public void LoanBook(string isbn, string memberIdOrName)
         {
-            if (string.IsNullOrEmpty(isbn)) throw new ArgumentException("ISBN kan inte vara tomt.");
-            if (string.IsNullOrEmpty(memberId)) throw new ArgumentException("Medlems-ID kan inte vara tomt.");
+            if (string.IsNullOrEmpty(isbn)) throw new ArgumentException("ISBN får inte vara tomt.");
+            if (string.IsNullOrEmpty(memberIdOrName)) throw new ArgumentException("Medlems-info får inte vara tomt.");
 
             var book = _books.FirstOrDefault(b => b.ISBN == isbn);
-            var member = _members.FirstOrDefault(m => m.MemberId == memberId);
+            var member = _members.FirstOrDefault(m => 
+                m.MemberId == memberIdOrName || 
+                m.Name.ToLower().Contains(memberIdOrName.ToLower()));
             
             // Kolla att både boken och medlemmen finns, och att boken är tillgänglig
             if (book == null) throw new ArgumentException($"Boken med ISBN {isbn} hittades inte.");
-            if (member == null) throw new ArgumentException($"Medlem med ID {memberId} hittades inte.");
+            if (member == null) throw new ArgumentException($"Ingen medlem hittades med ID eller namn: {memberIdOrName}");
             if (!book.IsAvailable) throw new InvalidOperationException("Boken är redan utlånad.");
 
-         
             book.IsAvailable = false;
             var loan = new Loan(book, member, DateTime.Now, DateTime.Now.AddDays(14));
             
             _loans.Add(loan);
             member.BorrowedBooks.Add(book);
+            Console.WriteLine($"Lån registrerat för {member.Name}!");
 
         }
 

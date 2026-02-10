@@ -61,11 +61,12 @@ namespace LibraryApp
                         case "3": // Låna bok
                             Console.Write("Ange ISBN på boken: ");
                             string isbnToLoan = Console.ReadLine() ?? string.Empty;
-                            Console.Write("Ange Medlems-ID: ");
-                            string memberId = Console.ReadLine() ?? string.Empty;
+
+                            Console.Write("Ange Medlems-ID eller Namn: ");
+                            string memberInput = Console.ReadLine() ?? string.Empty;
 
                             // Försök att låna boken, om det inte går så kommer ett undantag att kastas som fångas i catch-blocket
-                            library.LoanBook(isbnToLoan, memberId);
+                            library.LoanBook(isbnToLoan, memberInput);
                             
                             // Om man kommer hit så har lånet lyckats, visa en bekräftelse
                             Console.ForegroundColor = ConsoleColor.Green;
