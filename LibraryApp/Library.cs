@@ -1,34 +1,35 @@
 using System;
-using System.Collections.Generic; // För att kunna använda List<T>
-using System.Linq; // För att kunna använda LINQ-metoder som FirstOrDefault, GroupBy, OrderByDescending, etc.
-using System.IO; // För att kunna använda File-klassen för att läsa/skriva filer
-using System.Text.Json; // För att kunna använda JsonSerializer
+using System.Collections.Generic; // För List<T>
+using System.Linq; // För LINQ-metoder
+using System.IO; // För filhantering
+using System.Text.Json; // För JSON-serialisering
 
 namespace LibraryApp
 {
     public class Library
     {
-        // Interna listor för att hålla reda på böcker, medlemmar och lån
+        // Listor för att hålla reda på böcker, medlemmar och lån
         private List<Book> _books = new List<Book>();
         private List<Member> _members = new List<Member>();
         private List<Loan> _loans = new List<Loan>();
         
-        // Filnamn för att spara/ladda data
+        // Filen hamnar oftast i bin/Debug/net10.0/ när du kör via Visual Studio
         private string fileName = "library_data.json";
 
+        // Metoder för att lägga till böcker och medlemmar
         public void AddBook(Book book) => _books.Add(book);
         public void AddMember(Member member) => _members.Add(member);
         public List<Member> GetMembers() => _members;
 
-        // En wrapper-klass som hjälper med att organisera data när vi sparar/laddar
+        // En privat klass för att hjälpa till med JSON-serialisering
         private class LibraryDataWrapper
         {
             public List<Book> Books { get; set; } = new List<Book>();
             public List<Member> Members { get; set; } = new List<Member>();
             public List<Loan> Loans { get; set; } = new List<Loan>();
         }
-
-        // SPARA DATA
+        
+        // Metod för att spara data till fil
         public void SaveData()
         {
             var dataToSave = new
@@ -44,7 +45,7 @@ namespace LibraryApp
             Console.WriteLine("Data sparad till fil!");
         }
 
-        // LÄSA DATA
+        // Metod för att ladda data från fil
         public void LoadData()
         {
             if (!File.Exists(fileName))
@@ -63,8 +64,7 @@ namespace LibraryApp
                     _books = data.Books ?? new List<Book>();
                     _members = data.Members ?? new List<Member>();
                     _loans = data.Loans ?? new List<Loan>();
-
-                    // Eftersom vi sparar referenser i lån, behöver vi "koppla ihop" dem igen efter att ha laddat data. Vi letar upp de riktiga objekten i våra listor och uppdaterar referenserna i lånen.
+                    // Återställ referenser mellan lån, böcker och medlemmar
                     foreach (var loan in _loans)
                     {
                         var realBook = _books.FirstOrDefault(b => b.ISBN == loan.Book.ISBN);
@@ -83,18 +83,19 @@ namespace LibraryApp
             }
         }
 
-        // SÖK & SORTERA
+        // Metod för att söka böcker baserat på ett sökord
         public List<Book> SearchBooks(string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm)) return _books.ToList();
             return _books.Where(b => b.Matches(searchTerm)).ToList();
         }
 
-        // Sorterar böckerna i biblioteket efter publiceringsår
+        // Metod för att få en lista med böcker sorterade efter publiceringsår
         public List<Book> GetBooksSortedByYear() => _books.OrderBy(b => b.PublishedYear).ToList();
         public int GetTotalBooksCount() => _books.Count;
         public int GetBorrowedBooksCount() => _books.Count(b => !b.IsAvailable);
 
+        // Hitta den mest aktiva medlemmen baserat på antal lån
         public Member? GetMostActiveMember()
         {
             if (!_loans.Any()) return null;
@@ -104,12 +105,13 @@ namespace LibraryApp
                          .FirstOrDefault();
         }
 
+        // Hitta ett aktivt lån baserat på ISBN
         public Loan? GetActiveLoan(string isbn)
         {
             return _loans.FirstOrDefault(l => l.Book.ISBN == isbn && l.ReturnDate == null);
         }
 
-        // UTLÅN & ÅTERLÄMNING
+        // Metod för att låna en bok
         public void LoanBook(string isbn, string memberIdOrName)
         {
             if (string.IsNullOrEmpty(isbn)) throw new ArgumentException("ISBN får inte vara tomt.");
@@ -124,7 +126,6 @@ namespace LibraryApp
             if (member == null) throw new ArgumentException($"Ingen medlem hittades: {memberIdOrName}");
             if (!book.IsAvailable) throw new InvalidOperationException("Boken är redan utlånad.");
 
-            // Skapa ett lån och uppdatera status
             book.IsAvailable = false;
             var loan = new Loan(book, member, DateTime.Now, DateTime.Now.AddDays(14));
             
