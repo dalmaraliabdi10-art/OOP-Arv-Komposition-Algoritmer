@@ -19,14 +19,14 @@
       "Title": "Harry Potter",
       "Author": "J.K. Rowling",
       "PublishedYear": 1997,
-      "IsAvailable": true
+      "IsAvailable": false
     },
     {
       "ISBN": "978-4",
       "Title": "C# i N\u00F6tskal",
       "Author": "Albahari",
       "PublishedYear": 2022,
-      "IsAvailable": true
+      "IsAvailable": false
     },
     {
       "ISBN": "978-5",
@@ -41,13 +41,20 @@
       "MemberId": "M001",
       "Name": "Anna Andersson",
       "Email": "anna@example.com",
-      "MemberSince": "2026-02-10T02:57:41.647255+01:00",
+      "MemberSince": "2026-02-10T03:19:16.151855+01:00",
       "BorrowedBooks": [
         {
           "ISBN": "978-1",
           "Title": "Sagan om Ringen",
           "Author": "J.R.R. Tolkien",
           "PublishedYear": 1954,
+          "IsAvailable": false
+        },
+        {
+          "ISBN": "978-4",
+          "Title": "C# i N\u00F6tskal",
+          "Author": "Albahari",
+          "PublishedYear": 2022,
           "IsAvailable": false
         }
       ]
@@ -56,15 +63,23 @@
       "MemberId": "M002",
       "Name": "Bengt Berg",
       "Email": "bengt@example.com",
-      "MemberSince": "2026-02-10T02:57:41.6472978+01:00",
+      "MemberSince": "2026-02-10T03:19:16.1519137+01:00",
       "BorrowedBooks": []
     },
     {
       "MemberId": "M003",
       "Name": "Cecilia Ceder",
       "Email": "cecilia@example.com",
-      "MemberSince": "2026-02-10T02:57:41.6472983+01:00",
-      "BorrowedBooks": []
+      "MemberSince": "2026-02-10T03:19:16.1519145+01:00",
+      "BorrowedBooks": [
+        {
+          "ISBN": "978-3",
+          "Title": "Harry Potter",
+          "Author": "J.K. Rowling",
+          "PublishedYear": 1997,
+          "IsAvailable": false
+        }
+      ]
     }
   ],
   "Loans": [
@@ -80,7 +95,7 @@
         "MemberId": "M001",
         "Name": "Anna Andersson",
         "Email": "anna@example.com",
-        "MemberSince": "2026-02-10T02:57:41.647255+01:00",
+        "MemberSince": "2026-02-10T03:19:16.151855+01:00",
         "BorrowedBooks": [
           {
             "ISBN": "978-1",
@@ -88,11 +103,104 @@
             "Author": "J.R.R. Tolkien",
             "PublishedYear": 1954,
             "IsAvailable": false
+          },
+          {
+            "ISBN": "978-4",
+            "Title": "C# i N\u00F6tskal",
+            "Author": "Albahari",
+            "PublishedYear": 2022,
+            "IsAvailable": false
           }
         ]
       },
-      "LoanDate": "2026-02-10T02:57:53.8775214+01:00",
-      "DueDate": "2026-02-24T02:57:53.8775274+01:00",
+      "LoanDate": "2026-02-10T03:19:34.3345711+01:00",
+      "DueDate": "2026-02-24T03:19:34.3345768+01:00",
+      "ReturnDate": null,
+      "IsOverdue": false,
+      "IsReturned": false
+    },
+    {
+      "Book": {
+        "ISBN": "978-2",
+        "Title": "Hobbiten",
+        "Author": "J.R.R. Tolkien",
+        "PublishedYear": 1937,
+        "IsAvailable": true
+      },
+      "Member": {
+        "MemberId": "M002",
+        "Name": "Bengt Berg",
+        "Email": "bengt@example.com",
+        "MemberSince": "2026-02-10T03:19:16.1519137+01:00",
+        "BorrowedBooks": []
+      },
+      "LoanDate": "2026-02-10T03:19:44.6260067+01:00",
+      "DueDate": "2026-02-24T03:19:44.6260127+01:00",
+      "ReturnDate": "2026-02-10T03:20:51.5489636+01:00",
+      "IsOverdue": false,
+      "IsReturned": true
+    },
+    {
+      "Book": {
+        "ISBN": "978-3",
+        "Title": "Harry Potter",
+        "Author": "J.K. Rowling",
+        "PublishedYear": 1997,
+        "IsAvailable": false
+      },
+      "Member": {
+        "MemberId": "M003",
+        "Name": "Cecilia Ceder",
+        "Email": "cecilia@example.com",
+        "MemberSince": "2026-02-10T03:19:16.1519145+01:00",
+        "BorrowedBooks": [
+          {
+            "ISBN": "978-3",
+            "Title": "Harry Potter",
+            "Author": "J.K. Rowling",
+            "PublishedYear": 1997,
+            "IsAvailable": false
+          }
+        ]
+      },
+      "LoanDate": "2026-02-10T03:19:54.9845143+01:00",
+      "DueDate": "2026-02-24T03:19:54.9845191+01:00",
+      "ReturnDate": null,
+      "IsOverdue": false,
+      "IsReturned": false
+    },
+    {
+      "Book": {
+        "ISBN": "978-4",
+        "Title": "C# i N\u00F6tskal",
+        "Author": "Albahari",
+        "PublishedYear": 2022,
+        "IsAvailable": false
+      },
+      "Member": {
+        "MemberId": "M001",
+        "Name": "Anna Andersson",
+        "Email": "anna@example.com",
+        "MemberSince": "2026-02-10T03:19:16.151855+01:00",
+        "BorrowedBooks": [
+          {
+            "ISBN": "978-1",
+            "Title": "Sagan om Ringen",
+            "Author": "J.R.R. Tolkien",
+            "PublishedYear": 1954,
+            "IsAvailable": false
+          },
+          {
+            "ISBN": "978-4",
+            "Title": "C# i N\u00F6tskal",
+            "Author": "Albahari",
+            "PublishedYear": 2022,
+            "IsAvailable": false
+          }
+        ]
+      },
+      "LoanDate": "2026-02-10T03:20:12.6578653+01:00",
+      "DueDate": "2026-02-24T03:20:12.6578712+01:00",
       "ReturnDate": null,
       "IsOverdue": false,
       "IsReturned": false
