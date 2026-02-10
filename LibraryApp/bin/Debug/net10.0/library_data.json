@@ -1,0 +1,101 @@
+{
+  "Books": [
+    {
+      "ISBN": "978-1",
+      "Title": "Sagan om Ringen",
+      "Author": "J.R.R. Tolkien",
+      "PublishedYear": 1954,
+      "IsAvailable": false
+    },
+    {
+      "ISBN": "978-2",
+      "Title": "Hobbiten",
+      "Author": "J.R.R. Tolkien",
+      "PublishedYear": 1937,
+      "IsAvailable": true
+    },
+    {
+      "ISBN": "978-3",
+      "Title": "Harry Potter",
+      "Author": "J.K. Rowling",
+      "PublishedYear": 1997,
+      "IsAvailable": true
+    },
+    {
+      "ISBN": "978-4",
+      "Title": "C# i N\u00F6tskal",
+      "Author": "Albahari",
+      "PublishedYear": 2022,
+      "IsAvailable": true
+    },
+    {
+      "ISBN": "978-5",
+      "Title": "Clean Code",
+      "Author": "Robert C. Martin",
+      "PublishedYear": 2008,
+      "IsAvailable": true
+    }
+  ],
+  "Members": [
+    {
+      "MemberId": "M001",
+      "Name": "Anna Andersson",
+      "Email": "anna@example.com",
+      "MemberSince": "2026-02-10T02:57:41.647255+01:00",
+      "BorrowedBooks": [
+        {
+          "ISBN": "978-1",
+          "Title": "Sagan om Ringen",
+          "Author": "J.R.R. Tolkien",
+          "PublishedYear": 1954,
+          "IsAvailable": false
+        }
+      ]
+    },
+    {
+      "MemberId": "M002",
+      "Name": "Bengt Berg",
+      "Email": "bengt@example.com",
+      "MemberSince": "2026-02-10T02:57:41.6472978+01:00",
+      "BorrowedBooks": []
+    },
+    {
+      "MemberId": "M003",
+      "Name": "Cecilia Ceder",
+      "Email": "cecilia@example.com",
+      "MemberSince": "2026-02-10T02:57:41.6472983+01:00",
+      "BorrowedBooks": []
+    }
+  ],
+  "Loans": [
+    {
+      "Book": {
+        "ISBN": "978-1",
+        "Title": "Sagan om Ringen",
+        "Author": "J.R.R. Tolkien",
+        "PublishedYear": 1954,
+        "IsAvailable": false
+      },
+      "Member": {
+        "MemberId": "M001",
+        "Name": "Anna Andersson",
+        "Email": "anna@example.com",
+        "MemberSince": "2026-02-10T02:57:41.647255+01:00",
+        "BorrowedBooks": [
+          {
+            "ISBN": "978-1",
+            "Title": "Sagan om Ringen",
+            "Author": "J.R.R. Tolkien",
+            "PublishedYear": 1954,
+            "IsAvailable": false
+          }
+        ]
+      },
+      "LoanDate": "2026-02-10T02:57:53.8775214+01:00",
+      "DueDate": "2026-02-24T02:57:53.8775274+01:00",
+      "ReturnDate": null,
+      "IsOverdue": false,
+      "IsReturned": false
+    }
+  ]
+}

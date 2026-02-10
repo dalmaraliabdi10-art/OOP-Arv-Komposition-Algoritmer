@@ -2,6 +2,7 @@ using System;
 
 namespace LibraryApp
 {
+    // En klass som representerar ett lån av en bok till en medlem
     public class Loan
     {
         public Book Book { get; set; }
@@ -10,6 +11,7 @@ namespace LibraryApp
         public DateTime DueDate { get; set; }
         public DateTime? ReturnDate { get; set; } // "?" betyder att den kan vara null 
 
+        // Konstruktor
         public Loan(Book book, Member member, DateTime loanDate, DateTime dueDate)
         {
             Book = book;
@@ -31,6 +33,7 @@ namespace LibraryApp
             }
         }
 
+        // En metod som räknar ut förseningsavgiften baserat på hur många dagar boken är försenad
         public decimal CalculateLateFee()
         {
             if (!IsOverdue) return 0;

@@ -8,7 +8,12 @@ namespace LibraryApp
         static void Main(string[] args)
         {
             Library library = new Library();
+            library.LoadData();
+
+            if (library.GetTotalBooksCount() == 0)
+            {
             InitializeData(library);
+            }
 
             bool running = true;
 
@@ -39,8 +44,40 @@ namespace LibraryApp
                             Console.WriteLine("--- Alla böcker ---");
                             foreach (var book in allBooks)
                             {
-                                string status = book.IsAvailable ? "Tillgänglig" : "Utlånad";
-                                Console.WriteLine($"{book.GetInfo()} - [{status}]");
+                                if (book.IsAvailable)
+                                { // Om boken är tillgänglig, visa den i grönt
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Console.WriteLine($"{book.GetInfo()} - [Tillgänglig]");
+                                }
+                                else
+                                { 
+                                    var loan = library.GetActiveLoan(book.ISBN);
+                                    
+                                    if (loan != null)
+                                    {
+                                        int daysLeft = (loan.DueDate - DateTime.Now).Days;
+                                        string timeStatus;
+                                        if (daysLeft < 0)
+                                        { // Om det är försenat, visa hur många dagar det är försenat i rött
+                                            timeStatus = $"{Math.Abs(daysLeft)} dagar FÖRSENAD!";
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                        }
+                                        else
+                                        { // Om det är 0 dagar kvar, visa "förfaller idag"
+                                            timeStatus = $"{daysLeft} dagar kvar";
+                                            Console.ForegroundColor = ConsoleColor.Yellow;
+                                        }
+                                        Console.WriteLine($"{book.GetInfo()}");
+                                        Console.WriteLine($"   -> Utlånad till: {loan.Member.Name}");
+                                        Console.WriteLine($"   -> Status: {timeStatus}");
+                                    }
+                                    else
+                                    { // Om det inte finns något aktivt lån, visa boken som utlånad utan låntagarinfo (detta borde inte hända i normala fall)
+                                        Console.ForegroundColor = ConsoleColor.Yellow;
+                                        Console.WriteLine($"{book.GetInfo()} - [Utlånad]");
+                                    }
+                                }
+                                Console.ResetColor(); // Återställ färgen
                             }
                             WaitForKey();
                             break;
@@ -111,6 +148,7 @@ namespace LibraryApp
                             break;
 
                         case "0":
+                            library.SaveData();
                             running = false;
                             break;
 

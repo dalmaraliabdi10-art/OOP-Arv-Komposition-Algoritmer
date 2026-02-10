@@ -3,8 +3,10 @@ using System.Collections.Generic; // För List<T>
 
 namespace LibraryApp
 {
+    // En klass som representerar en medlem i biblioteket
     public class Member
     {
+        // Egenskaper för att hålla reda på medlemsinformation
         public string MemberId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
@@ -21,6 +23,7 @@ namespace LibraryApp
             MemberSince = DateTime.Now;
         }
 
+        // En metod för att låna en bok
         public void ShowInfo() // Metod för att visa medlemsinformation
         {
             Console.WriteLine($"Medlem: {Name} ({Email}) - ID: {MemberId}");
