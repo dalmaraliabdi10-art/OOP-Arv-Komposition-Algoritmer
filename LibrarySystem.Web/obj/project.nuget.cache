@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "/85Y9jUlNDg=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Gamer\\source\\repos\\OOP-Arv-Komposition-Algoritmer\\LibrarySystem.Web\\LibrarySystem.Web.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Gamer\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.1\\microsoft.aspnetcore.app.internal.assets.10.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
