@@ -1,0 +1,16 @@
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\bin\Debug\net10.0\LibrarySystem.Data.deps.json
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\bin\Debug\net10.0\LibrarySystem.Data.dll
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\bin\Debug\net10.0\LibrarySystem.Data.pdb
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\bin\Debug\net10.0\LibrarySystem.Core.dll
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\bin\Debug\net10.0\LibrarySystem.Core.pdb
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\LibrarySystem.Data.csproj.AssemblyReference.cache
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\LibrarySystem.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\LibrarySystem.Data.AssemblyInfoInputs.cache
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\LibrarySystem.Data.AssemblyInfo.cs
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\LibrarySystem.Data.csproj.CoreCompileInputs.cache
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\LibrarySystem.Data.sourcelink.json
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\LibraryS.1FFF9E2C.Up2Date
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\LibrarySystem.Data.dll
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\refint\LibrarySystem.Data.dll
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\LibrarySystem.Data.pdb
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Data\obj\Debug\net10.0\ref\LibrarySystem.Data.dll
