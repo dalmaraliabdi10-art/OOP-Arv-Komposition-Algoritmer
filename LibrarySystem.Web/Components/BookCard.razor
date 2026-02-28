@@ -1,0 +1,18 @@
+@using LibrarySystem.Core
+
+@* Jag ska använda Bootstrap-klasser för responsiv design och fin UX *@
+<div class="card h-100 shadow-sm border-@(Book.IsAvailable ? "success" : "danger")">
+    <div class="card-body">
+        <h5 class="card-title">@Book.Title</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Book.Author (@Book.PublishedYear)</h6>
+        
+        <span class="badge @(Book.IsAvailable ? "bg-success" : "bg-danger")">
+            @(Book.IsAvailable ? "🟢 Tillgänglig" : "🔴 Utlånad")
+        </span>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Book Book { get; set; } = default!;
+}

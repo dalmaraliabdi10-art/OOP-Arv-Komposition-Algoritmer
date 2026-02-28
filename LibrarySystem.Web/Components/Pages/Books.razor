@@ -1,0 +1,134 @@
+@page "/books"
+@using LibrarySystem.Core
+@using LibrarySystem.Core.Interfaces
+@inject IBookRepository BookRepo
+@rendermode InteractiveServer
+
+<PageTitle>Böcker - Biblioteket</PageTitle>
+
+<div class="container mt-4">
+    <h2>📚 Bokkatalogen</h2>
+    <hr />
+    <div class="row mb-4 align-items-end">
+        <div class="col-md-6">
+            <label class="form-label">Sök bok (Titel, Författare eller ISBN):</label>
+            <div class="input-group">
+                <input type="text" class="form-control" @bind="searchTerm" @bind:event="oninput" placeholder="Sökord..." />
+                <button class="btn btn-outline-secondary" @onclick="PerformSearch">Sök</button>
+            </div>
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-success" @onclick="ToggleAddForm">
+                @(showAddForm ? "Avbryt" : "+ Lägg till ny bok")
+            </button>
+        </div>
+    </div>
+    @if (showAddForm)
+    {
+        <div class="card mb-4 shadow-sm border-success">
+            <div class="card-header bg-success text-white">Registrera ny bok</div>
+            <div class="card-body">
+                <EditForm Model="newBook" OnValidSubmit="HandleValidSubmit" FormName="AddBookForm">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" />
+
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Titel <span class="text-danger">*</span></label>
+                            <InputText @bind-Value="newBook.Title" class="form-control" />
+                            <ValidationMessage For="@(() => newBook.Title)" class="text-danger text-sm" />
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Författare</label>
+                            <InputText @bind-Value="newBook.Author" class="form-control" />
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">ISBN <span class="text-danger">*</span></label>
+                            <InputText @bind-Value="newBook.ISBN" class="form-control" />
+                            <ValidationMessage For="@(() => newBook.ISBN)" class="text-danger text-sm" />
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">År</label>
+                            <InputNumber @bind-Value="newBook.PublishedYear" class="form-control" />
+                        </div>
+                    </div>
+                    
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger">@errorMessage</div>
+                    }
+
+                    <button type="submit" class="btn btn-primary">Spara bok</button>
+                </EditForm>
+            </div>
+        </div>
+    }
+    @if (books == null)
+    {
+        <p><em>Laddar böcker...</em></p>
+    }
+    else if (!books.Any())
+    {
+        <div class="alert alert-info">Inga böcker hittades.</div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var book in books)
+            {
+                <div class="col">
+                    <BookCard Book="book" />
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private IEnumerable<Book>? books;
+    private string searchTerm = string.Empty;
+    private bool showAddForm = false;
+    private string errorMessage = string.Empty;
+
+    private Book newBook = new Book { PublishedYear = DateTime.Now.Year };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBooks();
+    }
+
+    private async Task LoadBooks()
+    {
+        books = await BookRepo.GetAllAsync();
+    }
+
+    private async Task PerformSearch()
+    {
+        books = await BookRepo.SearchAsync(searchTerm);
+    }
+
+    private void ToggleAddForm()
+    {
+        showAddForm = !showAddForm;
+        errorMessage = string.Empty;
+        if (!showAddForm)
+        {
+            newBook = new Book { PublishedYear = DateTime.Now.Year }; // Återställ formuläret
+        }
+    }
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            errorMessage = string.Empty;
+            await BookRepo.AddAsync(newBook);
+            newBook = new Book { PublishedYear = DateTime.Now.Year };
+            showAddForm = false;
+            await LoadBooks();
+        }
+        catch (Exception)
+        {
+            errorMessage = "Kunde inte spara boken. Kontrollera att ISBN är unikt.";
+        }
+    }
+}
