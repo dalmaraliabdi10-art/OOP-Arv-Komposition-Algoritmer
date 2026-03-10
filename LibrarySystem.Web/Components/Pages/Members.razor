@@ -37,6 +37,10 @@
                             <ValidationMessage For="@(() => newMember.Email)" class="text-danger text-sm" />
                         </div>
                         <div class="col-md-2 mb-3 d-flex align-items-end">
+                            @if (!string.IsNullOrEmpty(errorMessage))
+                            {
+                                <div class="alert alert-danger col-12 mt-2">@errorMessage</div>
+                            }
                             <button type="submit" class="btn btn-primary w-100">Spara</button>
                         </div>
                     </div>
@@ -64,7 +68,7 @@
                         <th>E-post</th>
                         <th>Medlem sedan</th>
                         <th class="text-center">Aktiva lån</th>
-                    </tr>
+                        <th>Åtgärd</th> </tr>
                 </thead>
                 <tbody>
                     @foreach (var member in members)
@@ -78,6 +82,11 @@
                                     @(member.Loans?.Count(l => l.ReturnDate == null) ?? 0)
                                 </span>
                             </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteMember(member.Id)">
+                                    Ta bort
+                                </button>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -87,9 +96,11 @@
 </div>
 
 @code {
+// Vi har en lista över medlemmar som vi hämtar från repositoryt när komponenten initieras. Vi har också en flagga "showAddForm" som styr visningen av formuläret för att lägga till en ny medlem, samt en sträng "errorMessage" för att visa eventuella felmeddelanden.
     private IEnumerable<Member>? members;
     private bool showAddForm = false;
-    
+    private string errorMessage = string.Empty;
+   
     // Vi använder en separat "newMember"-instans för formuläret så att vi inte påverkar listan direkt innan vi sparar
     private Member newMember = new Member();
 
@@ -102,19 +113,41 @@
     {
         members = await MemberRepo.GetAllAsync();
     }
-
+// Denna metod togglar visningen av formuläret för att lägga till en ny medlem. Om formuläret stängs rensas "newMember"-instansen så att det är tomt nästa
     private void ToggleAddForm()
     {
         showAddForm = !showAddForm;
-        if (!showAddForm) newMember = new Member(); // Rensa formuläret om man stänger
+        if (!showAddForm) newMember = new Member();
     }
-
+// Denna metod hanterar formulärets "OnValidSubmit"-händelse. Den försöker spara den nya medlemmen via repositoryt och hanterar eventuella fel genom att visa ett meddelande.
     private async Task HandleValidSubmit()
     {
-        await MemberRepo.AddAsync(newMember);
-        
-        newMember = new Member();
-        showAddForm = false;
-        await LoadMembers(); // Uppdatera listan direkt
+        try
+        {
+            errorMessage = string.Empty;
+            await MemberRepo.AddAsync(newMember);
+            newMember = new Member();
+            showAddForm = false;
+            await LoadMembers(); 
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+// Denna metod hanterar borttagning av en medlem. Om det finns aktiva lån kommer repositoryt att kasta ett undantag som vi fångar och visar som ett felmeddelande.
+    private async Task DeleteMember(int id)
+    {
+        try
+        {
+            errorMessage = string.Empty;
+            await MemberRepo.DeleteAsync(id);
+            await LoadMembers();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message; 
+        }
     }
 }

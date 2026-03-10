@@ -3,38 +3,86 @@
 @inject IBookRepository BookRepo
 @rendermode InteractiveServer
 
-<PageTitle>Bibliotek 2.0</PageTitle>
+<PageTitle>Startsida - Bibliotek 2.0</PageTitle>
 
-<div class="p-5 mb-4 bg-light rounded-3 shadow">
-    <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold">📚 Välkommen till Bibliotekssystemet</h1>
-        <p class="col-md-8 fs-4">Ett modernt system byggt med Blazor och Entity Framework Core.</p>
-        <a href="/books" class="btn btn-primary btn-lg">Gå till Bokkatalogen</a>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-4 mb-3">
-        <div class="card text-white bg-primary shadow">
-            <div class="card-body text-center">
-                <h3>@TotalBooks</h3>
-                <p>Registrerade böcker</p>
+<div class="container mt-3">
+    <div class="p-5 mb-5 rounded-4 shadow-sm" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border: 1px solid #e9ecef;">
+        <div class="row align-items-center">
+            <div class="col-md-8 text-center text-md-start">
+                <h1 class="display-4 fw-extrabold text-dark mb-3">
+                    <span class="text-primary">Bibliotek</span> 2.0
+                </h1>
+                <p class="lead text-muted mb-4 fs-4">
+                    Ett modernt och snabbt system för att hantera din bokkatalog, medlemmar och lån. Allt på ett ställe.
+                </p>
+                <div class="d-flex gap-3 justify-content-center justify-content-md-start">
+                    <a href="/books" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">
+                        📚 Hitta böcker
+                    </a>
+                    <a href="/loans" class="btn btn-outline-dark btn-lg px-4 rounded-pill bg-white">
+                        🔄 Hantera lån
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 d-none d-md-flex justify-content-center">
+                @* Snygg dekorativ del till höger *@
+                <div style="font-size: 8rem; line-height: 1; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.1));">
+                    📖
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="card text-white bg-success shadow">
-            <div class="card-body text-center">
-                <h3>@AvailableBooks</h3>
-                <p>Tillgängliga för lån</p>
+
+    @* STATISTIK-KORT: Modern "Dashboard"-känsla *@
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h3 class="fw-bold text-secondary m-0">Översikt</h3>
+        <a href="/members" class="text-decoration-none text-primary">Se alla medlemmar →</a>
+    </div>
+    
+    <div class="row g-4 mb-5">
+        @* Kort 1: Totalt antal böcker *@
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm" style="border-left: 5px solid #0d6efd !important; transition: transform 0.2s;">
+                <div class="card-body d-flex align-items-center p-4">
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-4 d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
+                        <span style="font-size: 1.8rem;">📚</span>
+                    </div>
+                    <div>
+                        <h6 class="card-subtitle text-muted fw-bold mb-1 text-uppercase" style="letter-spacing: 1px; font-size: 0.8rem;">Registrerade Böcker</h6>
+                        <h2 class="card-title mb-0 fw-bold text-dark">@TotalBooks</h2>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 mb-3">
-        <div class="card text-white bg-warning shadow">
-            <div class="card-body text-center">
-                <h3>Snabbval</h3>
-                <a href="/loans" class="btn btn-dark btn-sm mt-2">Hantera lån</a>
+
+        @* Kort 2: Tillgängliga böcker *@
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm" style="border-left: 5px solid #198754 !important; transition: transform 0.2s;">
+                <div class="card-body d-flex align-items-center p-4">
+                    <div class="bg-success bg-opacity-10 p-3 rounded-3 me-4 d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
+                        <span style="font-size: 1.8rem;">✅</span>
+                    </div>
+                    <div>
+                        <h6 class="card-subtitle text-muted fw-bold mb-1 text-uppercase" style="letter-spacing: 1px; font-size: 0.8rem;">Tillgängliga för lån</h6>
+                        <h2 class="card-title mb-0 fw-bold text-dark">@AvailableBooks</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Kort 3: Utlånade böcker *@
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm" style="border-left: 5px solid #dc3545 !important; transition: transform 0.2s;">
+                <div class="card-body d-flex align-items-center p-4">
+                    <div class="bg-danger bg-opacity-10 p-3 rounded-3 me-4 d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
+                        <span style="font-size: 1.8rem;">⏳</span>
+                    </div>
+                    <div>
+                        <h6 class="card-subtitle text-muted fw-bold mb-1 text-uppercase" style="letter-spacing: 1px; font-size: 0.8rem;">Just nu utlånade</h6>
+                        @* Vi räknar ut de utlånade böckerna direkt *@
+                        <h2 class="card-title mb-0 fw-bold text-dark">@(TotalBooks - AvailableBooks)</h2>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -43,6 +91,7 @@
 @code {
     private int TotalBooks = 0;
     private int AvailableBooks = 0;
+
     protected override async Task OnInitializedAsync()
     {
         var books = await BookRepo.GetAllAsync();

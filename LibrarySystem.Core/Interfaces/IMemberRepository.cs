@@ -7,5 +7,6 @@ namespace LibrarySystem.Core.Interfaces
     {
         Task<IEnumerable<Member>> GetAllAsync();
         Task AddAsync(Member member);
+        Task DeleteAsync(int id);
     }
 }

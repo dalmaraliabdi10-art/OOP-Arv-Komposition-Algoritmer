@@ -144,7 +144,6 @@ C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\scopedcss\Components\Layout\ReconnectModal.razor.rz.scp.css
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\scopedcss\bundle\LibrarySystem.Web.styles.css
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\scopedcss\projectbundle\LibrarySystem.Web.bundle.scp.css
-C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\compressed\bbocn8xy51-{0}-khy4lop6wu-khy4lop6wu.gz
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\compressed\0zsjni6uw0-{0}-bqjiyaj88i-bqjiyaj88i.gz
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\compressed\7db1vh2fmb-{0}-c2jlpeoesf-c2jlpeoesf.gz
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\compressed\ktu41tzy8d-{0}-erw9l3u2r3-erw9l3u2r3.gz
@@ -205,3 +204,4 @@ C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\LibrarySystem.Web.pdb
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\LibrarySystem.Web.genruntimeconfig.cache
 C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\ref\LibrarySystem.Web.dll
+C:\Users\Gamer\source\repos\OOP-Arv-Komposition-Algoritmer\LibrarySystem.Web\obj\Debug\net10.0\compressed\bbocn8xy51-{0}-jqynk39osw-jqynk39osw.gz

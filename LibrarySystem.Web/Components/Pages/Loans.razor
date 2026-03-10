@@ -1,0 +1,159 @@
+@page "/loans"
+@using LibrarySystem.Core
+@using LibrarySystem.Core.Interfaces
+@inject ILoanRepository LoanRepo
+@inject IBookRepository BookRepo
+@inject IMemberRepository MemberRepo
+@rendermode InteractiveServer
+
+<PageTitle>Utlåning - Biblioteket</PageTitle>
+
+<div class="container mt-4">
+    <h2>📗 Utlåning & Återlämning</h2>
+    <hr />
+
+    @* DEL 1: FORMULÄR FÖR NYTT LÅN *@
+    <div class="card mb-4 shadow-sm border-primary">
+        <div class="card-header bg-primary text-white">Registrera nytt lån</div>
+        <div class="card-body">
+            @if (availableBooks != null && members != null && availableBooks.Any() && members.Any())
+            {
+                <EditForm Model="newLoan" OnValidSubmit="HandleValidSubmit" FormName="AddLoanForm">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" />
+
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <label class="form-label">Välj Medlem <span class="text-danger">*</span></label>
+                            <InputSelect @bind-Value="newLoan.MemberId" class="form-select">
+                                <option value="0">-- Välj en medlem --</option>
+                                @foreach (var member in members)
+                                {
+                                    <option value="@member.Id">@member.Name (@member.Email)</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        
+                        <div class="col-md-5 mb-3">
+                            <label class="form-label">Välj Bok <span class="text-danger">*</span></label>
+                            <InputSelect @bind-Value="newLoan.BookId" class="form-select">
+                                <option value="0">-- Välj en tillgänglig bok --</option>
+                                @foreach (var book in availableBooks)
+                                {
+                                    <option value="@book.Id">@book.Title (@book.ISBN)</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <div class="col-md-2 mb-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-success w-100" disabled="@(newLoan.MemberId == 0 || newLoan.BookId == 0)">Låna ut</button>
+                        </div>
+                    </div>
+                </EditForm>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    ⚠️ Du måste ha registrerat minst en medlem och ha minst en tillgänglig bok i systemet för att kunna registrera ett lån.
+                </div>
+            }
+        </div>
+    </div>
+
+    @* DEL 2: LISTA ÖVER AKTIVA LÅN *@
+    <h4>Aktiva lån</h4>
+    @if (activeLoans == null)
+    {
+        <p><em>Laddar lån...</em></p>
+    }
+    else if (!activeLoans.Any())
+    {
+        <div class="alert alert-info">Inga böcker är utlånade just nu.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover shadow-sm align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Bok</th>
+                        <th>Medlem</th>
+                        <th>Lånedatum</th>
+                        <th>Förfallodatum</th>
+                        <th>Status</th>
+                        <th>Åtgärd</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var loan in activeLoans)
+                    {
+                        @* Om lånet är försenat gör vi hela raden röd*@
+                        <tr class="@(loan.IsOverdue ? "table-danger" : "")">
+                            <td class="fw-bold">@loan.Book?.Title</td>
+                            <td>@loan.Member?.Name</td>
+                            <td>@loan.LoanDate.ToShortDateString()</td>
+                            <td>@loan.DueDate.ToShortDateString()</td>
+                            <td>
+                                @*Markering av försenade lån*@
+                                @if (loan.IsOverdue)
+                                {
+                                    <span class="badge bg-danger">⚠️ Försenad</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Aktiv</span>
+                                }
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" @onclick="() => ReturnBook(loan.Id)">
+                                    Återlämna
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@code {
+    private IEnumerable<Loan>? activeLoans;
+    private IEnumerable<Book>? availableBooks;
+    private IEnumerable<Member>? members;
+
+    // Sätter automatiskt att förfallodatumet är 14 dagar framåt
+    private Loan newLoan = new Loan { DueDate = DateTime.Now.AddDays(14) };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    // Laddar både aktiva lån, tillgängliga böcker och medlemmar i en och samma metod för att undvika onödiga databasfrågor
+    private async Task LoadData()
+    {
+        activeLoans = await LoanRepo.GetAllActiveLoansAsync();
+        var allBooks = await BookRepo.GetAllAsync();
+        availableBooks = allBooks.Where(b => b.IsAvailable);
+        
+        members = await MemberRepo.GetAllAsync();
+    }
+    // Hanterar inlämning av det nya lånet
+    private async Task HandleValidSubmit()
+    {
+        if (newLoan.BookId == 0 || newLoan.MemberId == 0) return;
+
+        newLoan.LoanDate = DateTime.Now;
+        
+        await LoanRepo.AddLoanAsync(newLoan);
+        newLoan = new Loan { DueDate = DateTime.Now.AddDays(14) };
+        await LoadData();
+    }
+
+    private async Task ReturnBook(int loanId)
+    {
+        await LoanRepo.ReturnLoanAsync(loanId);
+        await LoadData();
+    }
+}
