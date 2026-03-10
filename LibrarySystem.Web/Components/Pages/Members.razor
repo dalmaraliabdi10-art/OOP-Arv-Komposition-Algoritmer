@@ -1,0 +1,120 @@
+@page "/members"
+@using LibrarySystem.Core
+@using LibrarySystem.Core.Interfaces
+@inject IMemberRepository MemberRepo
+@rendermode InteractiveServer
+
+<PageTitle>Medlemmar - Biblioteket</PageTitle>
+
+<div class="container mt-4">
+    <h2>👥 Medlemsregister</h2>
+    <hr />
+
+    <div class="text-end mb-4">
+        <button class="btn btn-success" @onclick="ToggleAddForm">
+            @(showAddForm ? "Avbryt" : "+ Registrera ny medlem")
+        </button>
+    </div>
+
+    @if (showAddForm)
+    {
+        <div class="card mb-4 shadow-sm border-success">
+            <div class="card-header bg-success text-white">Ny Medlem</div>
+            <div class="card-body">
+                <EditForm Model="newMember" OnValidSubmit="HandleValidSubmit" FormName="AddMemberForm">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" />
+
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <label class="form-label">Namn <span class="text-danger">*</span></label>
+                            <InputText @bind-Value="newMember.Name" class="form-control" />
+                            <ValidationMessage For="@(() => newMember.Name)" class="text-danger text-sm" />
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <label class="form-label">E-post <span class="text-danger">*</span></label>
+                            <InputText @bind-Value="newMember.Email" type="email" class="form-control" />
+                            <ValidationMessage For="@(() => newMember.Email)" class="text-danger text-sm" />
+                        </div>
+                        <div class="col-md-2 mb-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">Spara</button>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    }
+
+    @* Lista över medlemmar *@
+    @if (members == null)
+    {
+        <p><em>Laddar medlemmar...</em></p>
+    }
+    else if (!members.Any())
+    {
+        <div class="alert alert-info">Inga medlemmar registrerade.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover shadow-sm align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Namn</th>
+                        <th>E-post</th>
+                        <th>Medlem sedan</th>
+                        <th class="text-center">Aktiva lån</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var member in members)
+                    {
+                        <tr>
+                            <td class="fw-bold">@member.Name</td>
+                            <td>@member.Email</td>
+                            <td>@member.MemberSince.ToShortDateString()</td>
+                            <td class="text-center">
+                                <span class="badge bg-info text-dark rounded-pill fs-6">
+                                    @(member.Loans?.Count(l => l.ReturnDate == null) ?? 0)
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@code {
+    private IEnumerable<Member>? members;
+    private bool showAddForm = false;
+    
+    // Vi använder en separat "newMember"-instans för formuläret så att vi inte påverkar listan direkt innan vi sparar
+    private Member newMember = new Member();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMembers();
+    }
+
+    private async Task LoadMembers()
+    {
+        members = await MemberRepo.GetAllAsync();
+    }
+
+    private void ToggleAddForm()
+    {
+        showAddForm = !showAddForm;
+        if (!showAddForm) newMember = new Member(); // Rensa formuläret om man stänger
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await MemberRepo.AddAsync(newMember);
+        
+        newMember = new Member();
+        showAddForm = false;
+        await LoadMembers(); // Uppdatera listan direkt
+    }
+}
