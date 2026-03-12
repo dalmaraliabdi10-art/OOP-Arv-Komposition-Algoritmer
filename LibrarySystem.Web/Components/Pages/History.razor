@@ -1,0 +1,57 @@
+@page "/history"
+@using LibrarySystem.Core
+@using LibrarySystem.Core.Interfaces
+@inject ILoanRepository LoanRepo
+@rendermode InteractiveServer
+
+<PageTitle>Lånehistorik</PageTitle>
+
+<div class="container mt-4">
+    <h2>📜 Lånehistorik</h2>
+    <hr />
+    <p class="text-muted">Här visas alla böcker som har återlämnats till biblioteket.</p>
+
+    @if (historicalLoans == null)
+    {
+        <p><em>Laddar historik...</em></p>
+    }
+    else if (!historicalLoans.Any())
+    {
+        <div class="alert alert-info">Det finns ingen historik ännu. Inga böcker har återlämnats.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped shadow-sm align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Bok</th>
+                        <th>Medlem</th>
+                        <th>Lånades ut</th>
+                        <th>Återlämnades</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var loan in historicalLoans)
+                    {
+                        <tr>
+                            <td class="fw-bold">@loan.Book?.Title</td>
+                            <td>@loan.Member?.Name</td>
+                            <td>@loan.LoanDate.ToShortDateString()</td>
+                            <td class="text-success fw-bold">@loan.ReturnDate?.ToShortDateString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@code {
+    private IEnumerable<Loan>? historicalLoans;
+
+    protected override async Task OnInitializedAsync()
+    {
+        historicalLoans = await LoanRepo.GetLoanHistoryAsync();
+    }
+}

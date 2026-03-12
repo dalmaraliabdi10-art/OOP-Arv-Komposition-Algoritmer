@@ -8,5 +8,6 @@ namespace LibrarySystem.Core.Interfaces
         Task<IEnumerable<Loan>> GetAllActiveLoansAsync();
         Task AddLoanAsync(Loan loan);
         Task ReturnLoanAsync(int loanId);
+        Task<IEnumerable<Loan>> GetLoanHistoryAsync();
     }
 }

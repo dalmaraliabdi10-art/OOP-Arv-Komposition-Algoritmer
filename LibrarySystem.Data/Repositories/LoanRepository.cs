@@ -49,5 +49,15 @@ namespace LibrarySystem.Data.Repositories
                 await context.SaveChangesAsync();
             }
         }
+        public async Task<IEnumerable<Loan>> GetLoanHistoryAsync()
+        { // Hämtar alla lån som har returnerats, sorterade efter returdatum i fallande ordning
+            using var context = await _contextFactory.CreateDbContextAsync();
+            return await context.Loans
+                .Include(l => l.Book)
+                .Include(l => l.Member)
+                .Where(l => l.ReturnDate != null)
+                .OrderByDescending(l => l.ReturnDate)
+                .ToListAsync();
+        }
     }
 }
