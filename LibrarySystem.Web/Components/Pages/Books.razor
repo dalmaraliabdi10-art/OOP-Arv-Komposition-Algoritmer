@@ -10,19 +10,22 @@
     <h2>📚 Bokkatalogen</h2>
     <hr />
     <div class="row mb-4 align-items-end">
-        <div class="col-md-6">
-            <label class="form-label">Sök bok (Titel, Författare eller ISBN):</label>
-            <div class="input-group">
+        <div class="col-md-7 mb-3 mb-md-0">
+            <label class="form-label fw-bold">Sök bok (Titel, Författare eller ISBN):</label>
+            <div class="input-group shadow-sm">
                 <input type="text" class="form-control" @bind="searchTerm" @bind:event="oninput" placeholder="Sökord..." />
-                <button class="btn btn-outline-secondary" @onclick="PerformSearch">Sök</button>
+                <button class="btn btn-primary px-4" @onclick="PerformSearch">Sök</button>
             </div>
         </div>
-        <div class="col-md-6 text-end">
-            <button class="btn btn-success" @onclick="ToggleAddForm">
-                @(showAddForm ? "Avbryt" : "+ Lägg till ny bok")
-            </button>
+        <div class="col-md-5 text-md-end">
+            <div class="d-grid d-md-block">
+                <button class="btn btn-success shadow-sm" @onclick="ToggleAddForm">
+                    @(showAddForm ? "Avbryt" : "+ Lägg till ny bok")
+                </button>
+            </div>
         </div>
     </div>
+
     @if (showAddForm)
     {
         <div class="card mb-4 shadow-sm border-success">
@@ -58,11 +61,14 @@
                         <div class="alert alert-danger">@errorMessage</div>
                     }
 
-                    <button type="submit" class="btn btn-primary">Spara bok</button>
+                    <div class="d-grid d-md-block mt-2">
+                        <button type="submit" class="btn btn-primary px-4">Spara bok</button>
+                    </div>
                 </EditForm>
             </div>
         </div>
     }
+
     @if (books == null)
     {
         <p><em>Laddar böcker...</em></p>
@@ -73,11 +79,16 @@
     }
     else
     {
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
             @foreach (var book in books)
             {
-                <div class="col">
+                <div class="col d-flex flex-column">
                     <BookCard Book="book" />
+                    
+                    <div class="d-flex flex-column flex-md-row justify-content-between mt-2 gap-2">
+                        <a href="/books/@book.Id" class="btn btn-sm btn-outline-info w-100">🔍 Detaljer</a>
+                        <button class="btn btn-sm btn-outline-danger w-100" @onclick="() => DeleteBook(book.Id)">🗑️ Ta bort</button>
+                    </div>
                 </div>
             }
         </div>
@@ -116,6 +127,7 @@
             newBook = new Book { PublishedYear = DateTime.Now.Year }; // Återställ formuläret
         }
     }
+
     private async Task HandleValidSubmit()
     {
         try
@@ -129,6 +141,20 @@
         catch (Exception)
         {
             errorMessage = "Kunde inte spara boken. Kontrollera att ISBN är unikt.";
+        }
+    }
+
+    private async Task DeleteBook(int id)
+    {
+        try
+        {
+            errorMessage = string.Empty;
+            await BookRepo.DeleteAsync(id);
+            await LoadBooks(); 
+        }
+        catch (Exception)
+        {
+            errorMessage = "Det gick inte att ta bort boken. Den kanske har aktiv lånehistorik.";
         }
     }
 }
