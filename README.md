@@ -1,27 +1,31 @@
-Bibliotekssystem
-Ett konsolbaserat program skrivet i C# för att hantera utlåning av böcker. Projektet visar objektorientering, algoritmer och datalagring.
+# 📚 Bibliotekssystem 2.0 (Blazor & Entity Framework Core)
 
-Funktioner
-Låna & Returnera: Hanterar utlåning med förfallodatum och status.
+Detta är Del 2 i utvecklingen av bibliotekssystemet. Applikationen har gått från att vara en konsolapplikation till en modern webbapplikation byggd med **Blazor Server** och **Entity Framework Core** (SQLite). 
 
-Sökfunktion: Sök på titel, författare eller ISBN.
+Projektet är strukturerat enligt **Repository Pattern** för att separera databaslogik från gränssnitt, vilket gör systemet robust, skalbart och testbart.
 
-Datalagring: Allt sparas automatiskt i library_data.json så inget försvinner. (Detta funkar inte efter man har stängt programmet)
+---
 
-Användarvänligt: Färgkodad text och inmatning
+## 🚀 Instruktioner för att köra projektet
 
-Så här kör du programmet
-Öppna terminalen i projektmappen.
+För att köra projektet lokalt på dator behöver man ha [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (eller nyare) installerat.
 
-Gå in i app-mappen:
-cd LibraryApp
+**1. Klona projektet och navigera till mappen:**
+```bash
+git clone https://github.com/dalmaraliabdi10-art/OOP-Arv-Komposition-Algoritmer
+cd OOP-Arv-Komposition-Algoritmer
 
-Starta:
-dotnet run
+Skapa databasen "Om filen library.db redan finns kan du hoppa över detta steg"
+Bash
+dotnet ef database update --project LibrarySystem.Data --startup-project LibrarySystem.Web
 
-Projektet innehåller xUnit-tester för att säkra logiken.
+Starta webbapplikationen:
+Bash
+dotnet watch --project LibrarySystem.Web
+
+Kör enhetstesterna:
+Bash
 dotnet test
-
 
 
 Databasdiagram
